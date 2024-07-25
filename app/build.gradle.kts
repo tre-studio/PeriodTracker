@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.trestudio.periodtracker"
-        minSdk = 21
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
