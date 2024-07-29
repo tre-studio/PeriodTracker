@@ -1,18 +1,15 @@
 package com.trestudio.periodtracker.components.layout.titlebar
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 
 @Composable
 fun TransitionName(
     list: List<String>,
-    inBetweenTime: Long = 1000,
+    inBetweenTime: Long = 7000,
     transitionDuration: Long = 250,
 ) {
     if (list.isEmpty()) return

@@ -1,7 +1,6 @@
 package com.trestudio.periodtracker
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,10 +14,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // dev mode
-        val dbFile = applicationContext.getDatabasePath("app_database")
-        if (dbFile.exists()) {
-            dbFile.delete()
-        }
+//        val dbFile = applicationContext.getDatabasePath("app_database")
+//        if (dbFile.exists()) {
+//            dbFile.delete()
+//        }
 
         viewModel = ViewModelProvider(
             this,
