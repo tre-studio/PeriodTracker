@@ -17,10 +17,6 @@ data class LMPstartDate(
         fun new(lmpStartDate: LocalDate, avgCycle: UInt, avgPeriod: UInt): LMPstartDate {
             return LMPstartDate(1, lmpStartDate, avgCycle.toInt(), avgPeriod.toInt())
         }
-
-        fun default(): LMPstartDate {
-            return new(LocalDate.now(), 1u, 1u)
-        }
     }
 }
 

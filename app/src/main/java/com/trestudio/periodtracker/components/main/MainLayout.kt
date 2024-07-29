@@ -2,7 +2,6 @@ package com.trestudio.periodtracker.components.main
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,8 +11,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.trestudio.periodtracker.components.theme.Theme
 import com.trestudio.periodtracker.viewmodel.MainViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 // note: add .safeDrawingPadding() on modifier
 
