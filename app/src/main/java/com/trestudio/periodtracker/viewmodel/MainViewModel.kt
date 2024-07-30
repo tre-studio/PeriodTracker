@@ -1,11 +1,8 @@
 package com.trestudio.periodtracker.viewmodel
 
 import android.app.Application
-import android.provider.ContactsContract.CommonDataKinds.Note
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
 import com.trestudio.periodtracker.viewmodel.database.*
@@ -75,7 +72,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     suspend fun addNote(notes: NoteDB) = db.noteDbDao().insert(notes)
     suspend fun getNotesForMonth(value: LocalDate): List<NoteDB> {
-        val pair = NoteDB.localDateToMonthAndString(value)
+//        val pair = NoteDB.localDateToMonthAndString(value)
 //        return db.noteDbDao().getMonthlyNotes(pair.first, pair.second)
         return db.noteDbDao().getMonthlyNotes()
     }

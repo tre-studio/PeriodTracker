@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.trestudio.periodtracker.R
 import com.trestudio.periodtracker.components.theme.Theme
 import com.trestudio.periodtracker.viewmodel.MainViewModel
-import kotlinx.coroutines.delay
 
 // note: add .safeDrawingPadding() on modifier
 
