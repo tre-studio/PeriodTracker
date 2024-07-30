@@ -12,8 +12,7 @@ fun VerticalLayout(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .padding(
-                horizontal = 8.dp,
-//                vertical = 16.dp
+                horizontal = 16.dp,
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

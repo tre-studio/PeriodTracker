@@ -123,12 +123,9 @@ fun GettingStartedLayout(
                         }
                     }, content2 = {
                         CalendarLayout(
-                            10, 0
-                        ) { value ->
+                            10, 0, viewModel = viewModel
+                        ) { value, _ ->
                             LMPstate.value = value.date
-//                            coroutineScope.launch {
-//                                viewModel.completeLMPstartDate(value.date)
-//                            }
                         }
                     })
 

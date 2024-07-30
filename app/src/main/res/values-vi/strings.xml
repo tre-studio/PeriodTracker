@@ -5,4 +5,12 @@
     <string name="good_afternoon">Chào Buổi Chiều</string>
     <string name="good_evening">Chào Buổi Tối</string>
     <string name="good_night">Chúc Ngủ Ngon</string>
+    <string name="normal_days_big_text">Tiến Lên Phía Trước</string>
+    <string name="normal_days_small_text">Đây là những ngày tập trung vào sự cân bằng và thói quen. Duy trì thói quen lành mạnh và luôn tích cực về tiến trình của bạn.</string>
+    <string name="period_phase_big_text">Nắm Lấy Sức Mạnh Của Bạn</string>
+    <string name="period_phase_small_text">Cơ thể bạn đang trải qua rất nhiều điều ngay lúc này. Hãy dành thời gian để chăm sóc bản thân và nhớ rằng giai đoạn này chỉ là tạm thời. Bạn có thể làm được!</string>
+    <string name="fertile_phase_big_text">Sống Động và Sôi Động</string>
+    <string name="fertile_phase_small_text">Đây là thời điểm của tiềm năng và năng lượng. Hãy sử dụng thời gian này để tập trung vào những gì khiến bạn cảm thấy tốt và tự tin.</string>
+    <string name="ovulation_phase_big_text">Tỏa Sáng</string>
+    <string name="ovulation_phase_small_text">Bạn đang ở đỉnh cao! Hãy đón nhận năng lượng và sự tự tin mà giai đoạn này mang lại. Hãy tận hưởng sức sống mãnh liệt.</string>
 </resources>

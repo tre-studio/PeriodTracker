@@ -4,19 +4,19 @@ import androidx.room.*
 import java.time.LocalDate
 
 class SymptonBuilder() {
-    private val output: Set<Symptom> = setOf()
+    private val output: MutableSet<Symptom> = mutableSetOf()
     fun withCramps(): SymptonBuilder {
-        output.plus(Symptom.Cramps)
+        output.add(Symptom.Cramps)
         return this
     }
 
     fun withFatigue(): SymptonBuilder {
-        output.plus(Symptom.Fatigue)
+        output.add(Symptom.Fatigue)
         return this
     }
 
     fun withMoodChanges(): SymptonBuilder {
-        output.plus(Symptom.MoodChanges)
+        output.add(Symptom.MoodChanges)
         return this
     }
 
@@ -31,10 +31,6 @@ enum class Symptom {
     MoodChanges;
 
     companion object {
-        fun builder(): SymptonBuilder {
-            return SymptonBuilder()
-        }
-
         fun match(input: String): Symptom? {
             return when (input) {
                 "Cramps" -> Cramps
@@ -53,11 +49,12 @@ enum class Mood {
 @Entity(tableName = "note")
 @TypeConverters(LMPConverters::class, NoteConverters::class)
 data class NoteDB(
-    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val date: LocalDate,
-    val symptom: Set<Symptom>,
-    val painLevel: Int,
-    val otherNote: String,
+    var symptom: Set<Symptom>,
+    var mood: Mood,
+    var painLevel: Int,
+    var otherNote: String,
 ) {
     companion object {
         fun localDateToMonthAndString(input: LocalDate): Pair<String, String> {
@@ -73,8 +70,17 @@ interface NoteDbDAO {
     @Insert
     suspend fun insert(date: NoteDB)
 
-    @Query("SELECT * FROM note WHERE strftime('%m', date) = :month AND strftime('%Y', date) = :year")
-    suspend fun getNotesForMonth(month: String, year: String): List<NoteDB>
+//    @Query("SELECT * FROM note WHERE strftime('%m', date) = :month AND strftime('%Y', date) = :year")
+//    suspend fun getMonthlyNotes(month: String, year: String): List<NoteDB>
+
+    @Query("SELECT * FROM note")
+    suspend fun getMonthlyNotes(): List<NoteDB>
+
+    @Update
+    suspend fun update(note: NoteDB)
+
+    @Delete
+    suspend fun delete(note: NoteDB)
 }
 
 class NoteConverters {

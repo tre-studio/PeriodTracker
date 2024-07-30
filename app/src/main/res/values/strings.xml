@@ -4,4 +4,12 @@
     <string name="good_afternoon">Good Afternoon</string>
     <string name="good_evening">Good Evening</string>
     <string name="good_night">Good Night</string>
+    <string name="normal_days_big_text">Keep Going Strong</string>
+    <string name="normal_days_small_text">These are the days to focus on balance and routine. Keep up your healthy habits and stay positive about your progress.</string>
+    <string name="period_phase_big_text">Embrace Your Strength</string>
+    <string name="period_phase_small_text">Your body is going through a lot right now. Take time for self-care and remember that this phase is temporary. You\'ve got this!</string>
+    <string name="fertile_phase_big_text">Vital and Vibrant</string>
+    <string name="fertile_phase_small_text">This is a time of potential and energy. Use this period to focus on what makes you feel good and empowered.</string>
+    <string name="ovulation_phase_big_text">Shine Bright</string>
+    <string name="ovulation_phase_small_text">You’re at your peak! Embrace the energy and confidence that comes with this phase. Enjoy the heightened vitality.</string>
 </resources>

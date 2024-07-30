@@ -29,8 +29,8 @@ fun TransitionName(
 
     AnimatedVisibility(
         visible = visible.value,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
+        enter = fadeIn() + slideInVertically(initialOffsetY = {height -> height}),
+        exit = fadeOut() + slideOutVertically(targetOffsetY = {height -> -height})
     ) {
         Text(
             color = MaterialTheme.colorScheme.onPrimaryContainer,

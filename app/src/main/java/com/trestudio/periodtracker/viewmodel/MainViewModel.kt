@@ -1,9 +1,17 @@
 package com.trestudio.periodtracker.viewmodel
 
 import android.app.Application
+import android.provider.ContactsContract.CommonDataKinds.Note
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
 import com.trestudio.periodtracker.viewmodel.database.*
+import com.trestudio.periodtracker.viewmodel.state.MainScreenState
+import com.trestudio.periodtracker.viewmodel.state.SettingButtonState
+import com.trestudio.periodtracker.viewmodel.state.TimelineButtonState
 import java.time.LocalDate
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
@@ -14,6 +22,40 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     )
         .fallbackToDestructiveMigration()
         .build()
+
+    private val _currentMonth = mutableStateOf(LocalDate.now())
+    val currentMonth: State<LocalDate> = _currentMonth
+    fun setCurrentMonth(month: LocalDate) {
+        _currentMonth.value = month
+    }
+
+    private val _mainScreenState = mutableStateOf(MainScreenState.MainApp)
+    private val _settingButtonState = mutableStateOf(SettingButtonState.SettingButton)
+    private val _timelineButtonState = mutableStateOf(TimelineButtonState.TimelineButton)
+
+    val mainScreenState: State<MainScreenState> = _mainScreenState
+    val settingButtonState: State<SettingButtonState> = _settingButtonState
+    val timelineButtonState: State<TimelineButtonState> = _timelineButtonState
+
+    fun setMainScreenState(state: MainScreenState) {
+        _mainScreenState.value = state
+    }
+
+    fun switchSettingButtonState() {
+        _settingButtonState.value = _settingButtonState.value.opposite()
+    }
+
+    fun switchTimelineButtonState() {
+        _timelineButtonState.value = _timelineButtonState.value.oposite()
+    }
+
+    fun setSettingButtonState(value: SettingButtonState) {
+        _settingButtonState.value = value
+    }
+
+    fun setTimelineButtonState(value: TimelineButtonState) {
+        _timelineButtonState.value = value
+    }
 
     suspend fun getIntroStatus() = db.gettingStartedDao().gettingStartedData()?.done
     suspend fun completeIntro(): Boolean {
@@ -27,14 +69,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     suspend fun getLMPstartDate() = db.LMPstartDateDao().getFirst()
 
-    suspend fun addNotes(date: LocalDate, symptom: SymptonBuilder, painLevel: Int, otherNote: String) {
-        db.noteDbDao().insert(NoteDB(null, date, symptom.build(), painLevel, otherNote))
-    }
+//    suspend fun addNotes(date: LocalDate, symptom: SymptonBuilder, painLevel: Int, otherNote: String) {
+//        db.noteDbDao().insert(NoteDB(null, date, symptom.build(), painLevel, otherNote))
+//    }
 
+    suspend fun addNote(notes: NoteDB) = db.noteDbDao().insert(notes)
     suspend fun getNotesForMonth(value: LocalDate): List<NoteDB> {
         val pair = NoteDB.localDateToMonthAndString(value)
-        return db.noteDbDao().getNotesForMonth(pair.first, pair.second)
+//        return db.noteDbDao().getMonthlyNotes(pair.first, pair.second)
+        return db.noteDbDao().getMonthlyNotes()
     }
+
+    suspend fun updateNote(notes: NoteDB) = db.noteDbDao().update(notes)
+    suspend fun deleteNote(notes: NoteDB) = db.noteDbDao().delete(notes)
 
     override fun onCleared() {
         super.onCleared()
