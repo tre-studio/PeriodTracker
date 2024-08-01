@@ -9,6 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.trestudio.periodtracker.R
@@ -18,6 +20,7 @@ import com.trestudio.periodtracker.viewmodel.state.TimelineButtonState
 
 @Composable
 fun TitleBar(portrait: Boolean, viewModel: MainViewModel) {
+    val haptic = LocalHapticFeedback.current
     val timeInfo by currentTimeFlow().collectAsState(TimeInfo(0, ""))
     val settingButton = viewModel.settingButtonState
     val timelineButton = viewModel.timelineButtonState
@@ -48,6 +51,7 @@ fun TitleBar(portrait: Boolean, viewModel: MainViewModel) {
                     modifier = Modifier
                         .size(36.dp)
                         .clickable {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             if (settingButton.value == SettingButtonState.SettingButton
                                 && timelineButton.value == TimelineButtonState.ExitButton
                             ) {
@@ -76,6 +80,7 @@ fun TitleBar(portrait: Boolean, viewModel: MainViewModel) {
                 modifier = Modifier
                     .size(36.dp)
                     .clickable {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         if (timelineButton.value == TimelineButtonState.TimelineButton
                             && settingButton.value == SettingButtonState.ReturnButton
                         ) {

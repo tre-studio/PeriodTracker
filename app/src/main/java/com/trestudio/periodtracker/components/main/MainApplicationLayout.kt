@@ -2,20 +2,23 @@ package com.trestudio.periodtracker.components.main
 
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -33,6 +36,7 @@ import com.trestudio.periodtracker.components.layout.HorizontalLayout
 import com.trestudio.periodtracker.components.layout.OrientationLayout
 import com.trestudio.periodtracker.components.layout.VerticalLayout
 import com.trestudio.periodtracker.components.layout.titlebar.TitleBar
+import com.trestudio.periodtracker.components.layout.navigator.BottomNavigator
 import com.trestudio.periodtracker.viewmodel.MainViewModel
 import com.trestudio.periodtracker.viewmodel.database.*
 import com.trestudio.periodtracker.viewmodel.state.MainScreenState
@@ -47,6 +51,7 @@ import java.util.*
 
 @Composable
 fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutineScope: CoroutineScope) {
+    val haptic = LocalHapticFeedback.current
     val mainScreenState = viewModel.mainScreenState
     val defaultLMP: MutableState<LMPstartDate?> = remember {
         mutableStateOf(null)
@@ -83,8 +88,7 @@ fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutine
                             .verticalScroll(scrollState)
                             .fillMaxSize(),
                         verticalArrangement = Arrangement.Bottom,
-
-                        ) {
+                    ) {
                         val bigText: String
                         val smallText: String
                         val currentPhase = phase.find { LocalDate.now() in it.startDate..it.endDate }
@@ -117,20 +121,13 @@ fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutine
 
                         Text(
                             bigText,
-                            style = MaterialTheme.typography.headlineLarge.copy(fontSize = 64.sp, lineHeight = 64.sp)
+                            style = MaterialTheme.typography.headlineLarge.copy(fontSize = 48.sp, lineHeight = 64.sp)
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(smallText, style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.height(64.dp))
                     }
-
-                    Box(
-                        modifier = Modifier
-//                            .weight(2.5f)
-//                            .fillMaxSize()
-                        ,
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
+                    Box(contentAlignment = Alignment.BottomCenter) {
                         CalendarLayout(
                             10,
                             10,
@@ -138,38 +135,42 @@ fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutine
                             viewModel
                         ) { day, note ->
                             Log.i("Test", "$day $note")
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             currentNote.value = note
                             currentDay.value = day
                             viewModel.setMainScreenState(MainScreenState.Note)
                             viewModel.setSettingButtonState(SettingButtonState.ReturnButton)
                         }
                     }
-                    Spacer(Modifier.height(16.dp))
                 }
 
                 MainScreenState.Setting -> {
-                    BackHandler(enabled = true) {
-                        currentNote.value = null
-                        currentDay.value = null
-                        viewModel.setMainScreenState(MainScreenState.MainApp)
-                        viewModel.setSettingButtonState(SettingButtonState.SettingButton)
+                    Column(modifier = Modifier.weight(1f)) {
+                        BackHandler(enabled = true) {
+                            currentNote.value = null
+                            currentDay.value = null
+                            viewModel.setMainScreenState(MainScreenState.MainApp)
+                            viewModel.setSettingButtonState(SettingButtonState.SettingButton)
+                        }
+                        Text(text = "Setting", style = MaterialTheme.typography.headlineLarge)
+                        Text(text = "Nothing for now")
                     }
-                    Text(text = "Setting", style = MaterialTheme.typography.headlineLarge)
-                    Text(text = "Nothing for now")
                 }
 
                 MainScreenState.Timeline -> {
-                    BackHandler(enabled = true) {
-                        currentNote.value = null
-                        currentDay.value = null
-                        viewModel.setMainScreenState(MainScreenState.MainApp)
-                        viewModel.setSettingButtonState(SettingButtonState.SettingButton)
-                        viewModel.setTimelineButtonState(TimelineButtonState.TimelineButton)
+                    Column(modifier = Modifier.weight(1f)) {
+                        BackHandler(enabled = true) {
+                            currentNote.value = null
+                            currentDay.value = null
+                            viewModel.setMainScreenState(MainScreenState.MainApp)
+                            viewModel.setSettingButtonState(SettingButtonState.SettingButton)
+                            viewModel.setTimelineButtonState(TimelineButtonState.TimelineButton)
+                        }
+                        Text(text = "Timeline", style = MaterialTheme.typography.headlineLarge)
+                        Text(text = "Period phase", color = PERIOD_COLOR)
+                        Text(text = "Fertile phase", color = FERTILE_COLOR)
+                        Text(text = "Ovulation phase", color = OVULATION_COLOR)
                     }
-                    Text(text = "Timeline", style = MaterialTheme.typography.headlineLarge)
-                    Text(text = "Period phase", color = PERIOD_COLOR)
-                    Text(text = "Fertile phase", color = FERTILE_COLOR)
-                    Text(text = "Ovulation phase", color = OVULATION_COLOR)
                 }
 
                 MainScreenState.Note -> {
@@ -470,7 +471,33 @@ fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutine
                         )
                     }
                 }
+
+                MainScreenState.QRcode -> {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                    )
+
+                    BackHandler(enabled = true) {
+                        viewModel.setMainScreenState(MainScreenState.MainApp)
+                    }
+                }
+
+                MainScreenState.Help -> {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                    )
+
+                    BackHandler(enabled = true) {
+                        viewModel.setMainScreenState(MainScreenState.MainApp)
+                    }
+                }
             }
+            BottomNavigator(mainScreenState, viewModel)
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
