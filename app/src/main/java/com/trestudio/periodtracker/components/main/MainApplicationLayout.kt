@@ -2,14 +2,14 @@ package com.trestudio.periodtracker.components.main
 
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -35,8 +34,8 @@ import com.trestudio.periodtracker.components.layout.CalendarLayout
 import com.trestudio.periodtracker.components.layout.HorizontalLayout
 import com.trestudio.periodtracker.components.layout.OrientationLayout
 import com.trestudio.periodtracker.components.layout.VerticalLayout
-import com.trestudio.periodtracker.components.layout.titlebar.TitleBar
 import com.trestudio.periodtracker.components.layout.navigator.BottomNavigator
+import com.trestudio.periodtracker.components.layout.titlebar.TitleBar
 import com.trestudio.periodtracker.viewmodel.MainViewModel
 import com.trestudio.periodtracker.viewmodel.database.*
 import com.trestudio.periodtracker.viewmodel.state.MainScreenState
@@ -248,17 +247,26 @@ fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutine
                             Spacer(modifier = Modifier.height(8.dp))
                             CheckboxWithLabel(
                                 checked = crampsChecked,
-                                onCheckedChange = { crampsChecked = it },
+                                onCheckedChange = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    crampsChecked = it
+                                },
                                 label = "Cramps"
                             )
                             CheckboxWithLabel(
                                 checked = fatigueChecked,
-                                onCheckedChange = { fatigueChecked = it },
+                                onCheckedChange = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    fatigueChecked = it
+                                },
                                 label = "Fatigue"
                             )
                             CheckboxWithLabel(
                                 checked = moodChangesChecked,
-                                onCheckedChange = { moodChangesChecked = it },
+                                onCheckedChange = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    moodChangesChecked = it
+                                },
                                 label = "Mood Changes"
                             )
                         }
@@ -273,7 +281,10 @@ fun MainApplicationLayout(portrait: Boolean, viewModel: MainViewModel, coroutine
                             Mood.entries.forEach { mood ->
                                 RadioButtonWithLabel(
                                     selected = selectedMood == mood,
-                                    onClick = { selectedMood = mood },
+                                    onClick = {
+                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        selectedMood = mood
+                                    },
                                     label = mood.name
                                 )
                             }

@@ -98,21 +98,15 @@ fun Day(day: CalendarDay, onClick: (CalendarDay, NoteDB?) -> Unit, rangeDays: Li
         color.copy(alpha = 0.5f)
     }
 
-    val shape = if (day.date == LocalDate.now()) {
-        // Set the shape to CircleShape for the current day
-        CircleShape
-    } else if (backgroundColor != null) {
-        val top = rangeDays.any { it.startDate == day.date }
-        val bottom = rangeDays.any { it.endDate == day.date }
-        RoundedCornerShape(
-            topStartPercent = if (top) 50 else 0,
-            bottomStartPercent = if (top) 50 else 0,
-            topEndPercent = if (bottom) 50 else 0,
-            bottomEndPercent = if (bottom) 50 else 0
-        )
-    } else {
-        RoundedCornerShape(0)
-    }
+    val top = rangeDays.any { it.startDate == day.date }
+    val bottom = rangeDays.any { it.endDate == day.date }
+
+    val shape = RoundedCornerShape(
+        topStartPercent = if (top) 50 else 0,
+        bottomStartPercent = if (top) 50 else 0,
+        topEndPercent = if (bottom) 50 else 0,
+        bottomEndPercent = if (bottom) 50 else 0
+    )
 
     Box(
         modifier = Modifier

@@ -3,7 +3,7 @@ package com.trestudio.periodtracker.viewmodel.database
 import androidx.room.*
 import java.time.LocalDate
 
-class SymptonBuilder() {
+class SymptonBuilder {
     private val output: MutableSet<Symptom> = mutableSetOf()
     fun withCramps(): SymptonBuilder {
         output.add(Symptom.Cramps)

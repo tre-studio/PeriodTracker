@@ -11,10 +11,12 @@ enum class TimelineButtonState {
 
     @Composable
     fun image(): Painter {
-        return painterResource(when (this) {
-            TimelineButton -> R.drawable.view_timeline_48px
-            ExitButton -> R.drawable.close_48px
-        })
+        return painterResource(
+            when (this) {
+                TimelineButton -> R.drawable.view_timeline_48px
+                ExitButton -> R.drawable.close_48px
+            }
+        )
     }
 
     fun getScreenState(): MainScreenState {

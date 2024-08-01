@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class TimeInfo (
+data class TimeInfo(
     val hours: Int,
     val formattedDate: String
 ) {
     @Composable
-    fun hourFormatted(): String = when(hours) {
+    fun hourFormatted(): String = when (hours) {
         in 5..11 -> stringResource(R.string.good_morning)
         in 12..18 -> stringResource(R.string.good_afternoon)
         in 19..22 -> stringResource(R.string.good_evening)

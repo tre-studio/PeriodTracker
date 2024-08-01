@@ -11,10 +11,12 @@ enum class SettingButtonState {
 
     @Composable
     fun image(): Painter {
-        return painterResource(when(this) {
-            SettingButton -> R.drawable.discover_tune_48px
-            ReturnButton -> R.drawable.chevron_left_48px
-        })
+        return painterResource(
+            when (this) {
+                SettingButton -> R.drawable.discover_tune_48px
+                ReturnButton -> R.drawable.chevron_left_48px
+            }
+        )
     }
 
     fun getScreenState(): MainScreenState {
