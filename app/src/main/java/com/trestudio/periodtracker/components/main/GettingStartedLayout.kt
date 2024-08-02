@@ -20,8 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -42,6 +45,7 @@ private enum class State {
 fun GettingStartedLayout(
     coroutineScope: CoroutineScope, doneGettingStarted: MutableState<Boolean>, viewModel: MainViewModel
 ) {
+    val haptic = LocalHapticFeedback.current
     val state = rememberSaveable { mutableStateOf(State.Intro) }
     val scrollState = rememberScrollState()
     val scrollbarColor = MaterialTheme.colorScheme.primary
@@ -81,14 +85,14 @@ fun GettingStartedLayout(
                         contentAlignment = Alignment.CenterStart,
                     ) {
                         Text(
-                            text = "Start Your Journey to Better Understanding Your Cycle.",
+                            text = stringResource(R.string.getting_started_intro),
                             style = MaterialTheme.typography.headlineLarge
                         )
                     }
                     Row {
                         Icon(painter = painterResource(R.drawable.arrow_right_alt_48px), contentDescription = null)
                         Text(
-                            text = "Welcome to period tracker app, your partner in tracking and understanding your " + "menstrual cycle. Our app provides a simple, intuitive way to monitor your symptoms, " + "predict important days, and gain insights into your health. Begin by setting up " + "your cycle details, and let us help you stay informed and in control.",
+                            text = stringResource(R.string.getting_started_body),
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
@@ -117,23 +121,40 @@ fun GettingStartedLayout(
                         }) {
                     Column2Elements(content = {
                         Column {
-                            Text("Last Menstrual Period (LMP) Start Date")
+                            Text(
+                                stringResource(R.string.getting_started_form_title1),
+                                style = MaterialTheme.typography.headlineSmall
+                            )
                             Spacer(Modifier.height(8.dp))
-                            Text(LMPstate.value?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "")
+                            Text(
+                                LMPstate.value?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
                         }
                     }, content2 = {
                         CalendarLayout(
                             10, 0, viewModel = viewModel
                         ) { value, _ ->
-                            LMPstate.value = value.date
+                            val date = value.date
+                            if (date > LocalDate.now()) {
+                                return@CalendarLayout
+                            }
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            LMPstate.value = date
                         }
                     })
 
                     Column2Elements(content = {
                         Column {
-                            Text("Average Cycle Length (vary from 21 to 35 days)")
+                            Text(
+                                stringResource(R.string.getting_started_form_title2),
+                                style = MaterialTheme.typography.headlineSmall
+                            )
                             Spacer(Modifier.height(8.dp))
-                            Text(avgycleLengthState.value.text)
+                            Text(
+                                avgycleLengthState.value.text,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
                         }
                     }, content2 = {
                         OutlinedTextField(
@@ -151,9 +172,15 @@ fun GettingStartedLayout(
 
                     Column2Elements(content = {
                         Column {
-                            Text("Average Period Length (vary from 2 to 7 days)")
+                            Text(
+                                stringResource(R.string.getting_started_form_title3),
+                                style = MaterialTheme.typography.headlineSmall
+                            )
                             Spacer(Modifier.height(8.dp))
-                            Text(avgPeriodLengthState.value.text)
+                            Text(
+                                avgPeriodLengthState.value.text,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
                         }
                     }, content2 = {
                         OutlinedTextField(
@@ -178,12 +205,12 @@ fun GettingStartedLayout(
                 .padding(16.dp), contentAlignment = Alignment.Center
         ) {
             if (state.value == State.Intro) {
-                BorderButton(onClick = { state.value = State.Input }, text = "Next")
+                BorderButton(onClick = { state.value = State.Input }, text = stringResource(R.string.next_button))
             } else {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
                 ) {
-                    BorderButton(onClick = { state.value = State.Intro }, text = "Back")
+                    BorderButton(onClick = { state.value = State.Intro }, text = stringResource(R.string.back_button))
                     BorderButton(onClick = {
                         if (LMPstate.value != null
                             && avgycleLengthState.value.text.isNotEmpty()
@@ -200,7 +227,7 @@ fun GettingStartedLayout(
                         } else {
                             errorState.value = true
                         }
-                    }, text = "Submit")
+                    }, text = stringResource(R.string.submit_button))
                 }
             }
         }
@@ -210,7 +237,7 @@ fun GettingStartedLayout(
         AlertDialog(
             onDismissRequest = { errorState.value = false },
             title = { Text("Hey you...") },
-            text = { Text("There are some missing fields, please make sure to complete them.") },
+            text = { Text(stringResource(R.string.getting_started_form_alert)) },
             confirmButton = {
                 Button(onClick = { errorState.value = false }) {
                     Text("OK")

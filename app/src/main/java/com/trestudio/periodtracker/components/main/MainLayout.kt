@@ -1,6 +1,5 @@
 package com.trestudio.periodtracker.components.main
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,9 +16,6 @@ import com.trestudio.periodtracker.R
 import com.trestudio.periodtracker.components.theme.Theme
 import com.trestudio.periodtracker.viewmodel.MainViewModel
 
-// note: add .safeDrawingPadding() on modifier
-
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MainLayout(viewModel: MainViewModel) {
     val configuration = LocalConfiguration.current

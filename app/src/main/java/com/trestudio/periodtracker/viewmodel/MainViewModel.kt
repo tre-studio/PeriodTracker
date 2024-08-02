@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
+import com.trestudio.periodtracker.algorithm.calendarDayRange
 import com.trestudio.periodtracker.viewmodel.database.AppDatabase
 import com.trestudio.periodtracker.viewmodel.database.GettingStartedData
 import com.trestudio.periodtracker.viewmodel.database.LMPstartDate
@@ -13,6 +14,8 @@ import com.trestudio.periodtracker.viewmodel.state.MainScreenState
 import com.trestudio.periodtracker.viewmodel.state.SettingButtonState
 import com.trestudio.periodtracker.viewmodel.state.TimelineButtonState
 import java.time.LocalDate
+import java.time.temporal.WeekFields
+import java.util.*
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val db = Room.databaseBuilder(
@@ -69,15 +72,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     suspend fun getLMPstartDate() = db.LMPstartDateDao().getFirst()
 
-//    suspend fun addNotes(date: LocalDate, symptom: SymptonBuilder, painLevel: Int, otherNote: String) {
-//        db.noteDbDao().insert(NoteDB(null, date, symptom.build(), painLevel, otherNote))
-//    }
-
     suspend fun addNote(notes: NoteDB) = db.noteDbDao().insert(notes)
     suspend fun getNotesForMonth(value: LocalDate): List<NoteDB> {
-//        val pair = NoteDB.localDateToMonthAndString(value)
-//        return db.noteDbDao().getMonthlyNotes(pair.first, pair.second)
-        return db.noteDbDao().getMonthlyNotes()
+        val (start, end) = calendarDayRange(value, WeekFields.of(Locale.getDefault()))
+        return db.noteDbDao().getMonthlyNotes(start, end)
     }
 
     suspend fun updateNote(notes: NoteDB) = db.noteDbDao().update(notes)

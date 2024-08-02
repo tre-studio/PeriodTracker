@@ -28,16 +28,23 @@ import com.trestudio.periodtracker.viewmodel.database.NoteDB
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
-data class RangeDay(val startDate: LocalDate, val endDate: LocalDate, val color: Color)
+enum class DayTagKind {
+    Top, Bottom, None;
+}
+
+class DayTag(val kind: DayTagKind, val color: Color)
+
+val currentDay: LocalDate = LocalDate.now()
 
 @Composable
 fun CalendarLayout(
     offsetStart: Long,
     offsetEnd: Long,
-    rangeDays: List<RangeDay> = listOf(),
+    rangeDays: HashMap<LocalDate, DayTag> = hashMapOf(),
     viewModel: MainViewModel,
     dayCallback: (CalendarDay, NoteDB?) -> Unit,
 ) {
@@ -53,15 +60,14 @@ fun CalendarLayout(
         firstDayOfWeek = daysOfWeek.first()
     )
 
-    val chosenMonth = state.firstVisibleMonth.yearMonth.month
-        .getDisplayName(TextStyle.FULL, Locale.getDefault())
+    val chosenMonth = state.firstVisibleMonth.yearMonth.format(DateTimeFormatter.ofPattern("MMMM / yyyy"))
 
     viewModel.setCurrentMonth(state.firstVisibleMonth.yearMonth.atDay(1))
 
-    LaunchedEffect(/* state.firstVisibleMonth */ true) {
-        Log.i("Test", "Start fetching note ${state.firstVisibleMonth.yearMonth.atDay(1)}")
+    LaunchedEffect(state.firstVisibleMonth) {
+        Log.i("Test", "Start fetching Note ${state.firstVisibleMonth.yearMonth.atDay(1)}")
         noteDays.value = viewModel.getNotesForMonth(state.firstVisibleMonth.yearMonth.atDay(1))
-        Log.i("Test", "Start fetching note RESULT ${noteDays.value}")
+        Log.i("Test", "Start fetching Note RESULT ${noteDays.value}")
     }
 
     HorizontalCalendar(
@@ -76,37 +82,46 @@ fun CalendarLayout(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 DaysOfWeekTitle(daysOfWeek = daysOfWeek)
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     )
 }
 
 @Composable
-fun Day(day: CalendarDay, onClick: (CalendarDay, NoteDB?) -> Unit, rangeDays: List<RangeDay>, noteDays: List<NoteDB>) {
+private fun Day(
+    day: CalendarDay,
+    onClick: (CalendarDay, NoteDB?) -> Unit,
+    rangeDays: HashMap<LocalDate, DayTag>,
+    noteDays: List<NoteDB>
+) {
     val note = noteDays.find { it.date == day.date }
-    val backgroundColor = if (day.date == LocalDate.now()) {
-        // Set the background color to the current day's color
+    val sameDay = day.date == currentDay
+    val searchResult = rangeDays[day.date]
+    val backgroundColor = if (sameDay) {
         MaterialTheme.colorScheme.primary
     } else {
-        rangeDays.find { day.date in it.startDate..it.endDate }?.color
+        searchResult?.color
     }
 
     val color = MaterialTheme.colorScheme.onPrimaryContainer
-    val outputColor = if (day.position == DayPosition.MonthDate) {
-        color
+    val outputColor =
+        (if (backgroundColor == null) color else if (backgroundColor.luminance() > 0.5) Color.Black else Color.White)
+            .let { if (day.position != DayPosition.MonthDate) it.copy(alpha = 0.5f) else it }
+
+    val top = searchResult?.kind == DayTagKind.Top
+    val bottom = searchResult?.kind == DayTagKind.Bottom
+
+    val shape = if (searchResult == null) {
+        CircleShape
     } else {
-        color.copy(alpha = 0.5f)
+        RoundedCornerShape(
+            topStartPercent = if (top) 50 else 0,
+            bottomStartPercent = if (top) 50 else 0,
+            topEndPercent = if (bottom) 50 else 0,
+            bottomEndPercent = if (bottom) 50 else 0
+        )
     }
-
-    val top = rangeDays.any { it.startDate == day.date }
-    val bottom = rangeDays.any { it.endDate == day.date }
-
-    val shape = RoundedCornerShape(
-        topStartPercent = if (top) 50 else 0,
-        bottomStartPercent = if (top) 50 else 0,
-        topEndPercent = if (bottom) 50 else 0,
-        bottomEndPercent = if (bottom) 50 else 0
-    )
 
     Box(
         modifier = Modifier
@@ -118,11 +133,7 @@ fun Day(day: CalendarDay, onClick: (CalendarDay, NoteDB?) -> Unit, rangeDays: Li
 
         Text(
             modifier = Modifier,
-            color = if (backgroundColor == null) {
-                outputColor
-            } else {
-                if (backgroundColor.luminance() > 0.5) Color.Black else Color.White
-            },
+            color = outputColor,
             text = day.date.dayOfMonth.toString()
         )
 
@@ -133,7 +144,7 @@ fun Day(day: CalendarDay, onClick: (CalendarDay, NoteDB?) -> Unit, rangeDays: Li
                 Box(
                     modifier = Modifier
                         .size(4.dp)
-                        .background(MaterialTheme.colorScheme.onBackground, CircleShape)
+                        .background(outputColor, CircleShape)
                         .padding(top = 100.dp)
                 )
             }
@@ -142,13 +153,14 @@ fun Day(day: CalendarDay, onClick: (CalendarDay, NoteDB?) -> Unit, rangeDays: Li
 }
 
 @Composable
-fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
+private fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
     Row(modifier = Modifier.fillMaxWidth()) {
         for (dayOfWeek in daysOfWeek) {
             Text(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                style = MaterialTheme.typography.labelSmall
             )
         }
     }

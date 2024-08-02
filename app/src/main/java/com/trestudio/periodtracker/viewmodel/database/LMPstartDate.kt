@@ -8,8 +8,6 @@ import java.time.LocalDate
 data class LMPstartDate(
     @PrimaryKey val id: Int = 1,
     val value: LocalDate,
-
-//    Quick note, Room doesn't support UInt, smh
     val avgCycle: Int,
     val avgPeriod: Int,
 ) {

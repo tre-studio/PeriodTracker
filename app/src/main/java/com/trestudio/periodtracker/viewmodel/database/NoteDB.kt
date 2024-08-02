@@ -43,7 +43,7 @@ enum class Symptom {
 }
 
 enum class Mood {
-    Happy, Neutral, Sad
+    Happy, Neutral, Sad;
 }
 
 @Entity(tableName = "note")
@@ -55,26 +55,15 @@ data class NoteDB(
     var mood: Mood,
     var painLevel: Int,
     var otherNote: String,
-) {
-    companion object {
-        fun localDateToMonthAndString(input: LocalDate): Pair<String, String> {
-            val month = input.monthValue.toString()
-            val year = input.year.toString()
-            return Pair(month, year)
-        }
-    }
-}
+)
 
 @Dao
 interface NoteDbDAO {
     @Insert
     suspend fun insert(date: NoteDB)
 
-//    @Query("SELECT * FROM note WHERE strftime('%m', date) = :month AND strftime('%Y', date) = :year")
-//    suspend fun getMonthlyNotes(month: String, year: String): List<NoteDB>
-
-    @Query("SELECT * FROM note")
-    suspend fun getMonthlyNotes(): List<NoteDB>
+    @Query("SELECT * FROM note WHERE date BETWEEN :start AND :end")
+    suspend fun getMonthlyNotes(start: LocalDate, end: LocalDate): List<NoteDB>
 
     @Update
     suspend fun update(note: NoteDB)

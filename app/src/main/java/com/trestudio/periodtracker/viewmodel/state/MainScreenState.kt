@@ -14,10 +14,9 @@ enum class MainScreenState {
     Help,
     ;
 
-    fun belongsToMainScreen(): Boolean {
-        return this == MainApp ||
-                this == Setting ||
-                this == Timeline ||
-                this == Note
-    }
+    private fun isMainComponent(): Boolean = this == MainApp || this == QRcode || this == Help
+
+    fun belongsToMainScreen(): Boolean = this == MainApp || this == Setting || this == Timeline || this == Note
+    fun isInTheLeft(next: MainScreenState): Boolean? =
+        if (this.isMainComponent() && next.isMainComponent()) this < next else null
 }
