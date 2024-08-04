@@ -25,6 +25,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -166,7 +167,10 @@ fun GettingStartedLayout(
                                     filteredValue, selection = newValue.selection
                                 )
                             },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Next
+                            )
                         )
                     })
 
@@ -191,7 +195,10 @@ fun GettingStartedLayout(
                                 avgPeriodLengthState.value =
                                     TextFieldValue(filteredValue, selection = newValue.selection)
                             },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done
+                            )
                         )
                     })
                 }
