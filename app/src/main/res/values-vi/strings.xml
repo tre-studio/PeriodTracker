@@ -53,4 +53,6 @@
     <string name="share_qrcode">Chia sẻ</string>
     <string name="please_restart_the_app_to_take_effect">Khởi động lại app để áp dụng cài đặt mới.</string>
     <string name="or_shareqr">Hoặc</string>
+    <string name="help">Trợ giúp</string>
+    <string name="more">Chi tiết</string>
 </resources>

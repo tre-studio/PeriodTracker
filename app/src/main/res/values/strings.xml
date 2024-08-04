@@ -52,4 +52,6 @@
     <string name="share_qrcode">Share</string>
     <string name="please_restart_the_app_to_take_effect">Please restart the app to take effect.</string>
     <string name="or_shareqr">Or</string>
+    <string name="help">Help</string>
+    <string name="more">Detail</string>
 </resources>

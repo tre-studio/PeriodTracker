@@ -65,6 +65,9 @@ interface NoteDbDAO {
     @Query("SELECT * FROM note WHERE date BETWEEN :start AND :end")
     suspend fun getMonthlyNotes(start: LocalDate, end: LocalDate): List<NoteDB>
 
+    @Query("SELECT * FROM note")
+    suspend fun getAllNotes(): List<NoteDB>
+
     @Update
     suspend fun update(note: NoteDB)
 

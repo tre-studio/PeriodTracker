@@ -32,6 +32,7 @@ import com.trestudio.periodtracker.viewmodel.database.Symptom
 import com.trestudio.periodtracker.viewmodel.database.SymptonBuilder
 import com.trestudio.periodtracker.viewmodel.state.MainScreenState
 import com.trestudio.periodtracker.viewmodel.state.SettingButtonState
+import com.trestudio.periodtracker.viewmodel.state.TimelineButtonState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
@@ -259,6 +260,7 @@ fun Note(
                             currentDay.value = null
                             viewModel.setMainScreenState(MainScreenState.MainApp)
                             viewModel.setSettingButtonState(SettingButtonState.SettingButton)
+                            viewModel.setTimelineButtonState(TimelineButtonState.TimelineButton)
                         }
                     }, text = stringResource(R.string.note_delete_button))
                     Spacer(modifier = Modifier.width(16.dp))
@@ -293,6 +295,7 @@ fun Note(
                             currentDay.value = null
                             viewModel.setMainScreenState(MainScreenState.MainApp)
                             viewModel.setSettingButtonState(SettingButtonState.SettingButton)
+                            viewModel.setTimelineButtonState(TimelineButtonState.TimelineButton)
                         }
                     }, text = stringResource(R.string.note_update_button))
                 }
@@ -337,6 +340,7 @@ fun Note(
                         currentDay.value = null
                         viewModel.setMainScreenState(MainScreenState.MainApp)
                         viewModel.setSettingButtonState(SettingButtonState.SettingButton)
+                        viewModel.setTimelineButtonState(TimelineButtonState.TimelineButton)
                     }
                 }, text = stringResource(R.string.note_create_button))
             }

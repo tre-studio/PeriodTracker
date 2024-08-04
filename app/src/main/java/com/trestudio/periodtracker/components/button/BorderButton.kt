@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -28,6 +29,11 @@ fun BorderButton(
             onClick()
         }
     ) {
-        Text(text, color = MaterialTheme.colorScheme.onPrimaryContainer)
+        Text(
+            text = text,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

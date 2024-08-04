@@ -65,7 +65,7 @@ fun calendarDayRange(currentMonth: LocalDate, weekFields: WeekFields): Pair<Loca
 }
 
 // Reference: https://discuss.kotlinlang.org/t/range-expression-iterating-between-two-localdate-objects/16/2
-private operator fun ClosedRange<LocalDate>.iterator(): Iterator<LocalDate> {
+operator fun ClosedRange<LocalDate>.iterator(): Iterator<LocalDate> {
     return object : Iterator<LocalDate> {
         private var next = this@iterator.start
         private val finalElement = this@iterator.endInclusive

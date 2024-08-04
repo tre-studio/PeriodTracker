@@ -80,6 +80,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return db.noteDbDao().getMonthlyNotes(start, end)
     }
 
+    suspend fun getAllNotes(): List<NoteDB> {
+        return db.noteDbDao().getAllNotes()
+    }
+
     suspend fun updateNote(notes: NoteDB) = db.noteDbDao().update(notes)
     suspend fun deleteNote(notes: NoteDB) = db.noteDbDao().delete(notes)
 
