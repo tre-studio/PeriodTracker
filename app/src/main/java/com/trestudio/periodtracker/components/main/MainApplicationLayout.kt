@@ -137,6 +137,7 @@ fun MainApplicationLayout(
                                 currentDay.value = localDateToCalendarDay(it.date)
                                 currentNote.value = it
                                 viewModel.setMainScreenState(MainScreenState.Note)
+                                viewModel.setTimelineButtonState(TimelineButtonState.TimelineButton)
                             }
                         }
                     }
