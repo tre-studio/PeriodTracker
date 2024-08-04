@@ -46,4 +46,11 @@
     <string name="next_button">Tiếp tục</string>
     <string name="back_button">Quay lại</string>
     <string name="submit_button">Hoàn thành</string>
+    <string name="this_feature_is_not_available">Tính năng này không khả dụng.</string>
+    <string name="intro_qrcode">Cập nhật tình trạng sức khỏe của bạn cho nguời thân bằng cách quét mã QR bên dưới.</string>
+    <string name="scan_qrcode">Muốn biết sức khỏe của người bạn thuơng? Ấn nút dưới để quét QR.</string>
+    <string name="open_camera">Mở máy ảnh</string>
+    <string name="share_qrcode">Chia sẻ</string>
+    <string name="please_restart_the_app_to_take_effect">Khởi động lại app để áp dụng cài đặt mới.</string>
+    <string name="or_shareqr">Hoặc</string>
 </resources>

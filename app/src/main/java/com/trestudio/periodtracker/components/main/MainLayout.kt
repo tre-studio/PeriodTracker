@@ -1,6 +1,7 @@
 package com.trestudio.periodtracker.components.main
 
 import android.content.res.Configuration
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +18,7 @@ import com.trestudio.periodtracker.components.theme.Theme
 import com.trestudio.periodtracker.viewmodel.MainViewModel
 
 @Composable
-fun MainLayout(viewModel: MainViewModel) {
+fun MainLayout(viewModel: MainViewModel, permissionRequest: ActivityResultLauncher<String>) {
     val configuration = LocalConfiguration.current
     val portrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
     val doneGettingStarted = remember { mutableStateOf(true) }
@@ -55,7 +56,7 @@ fun MainLayout(viewModel: MainViewModel) {
                     if (!doneGettingStarted.value) {
                         GettingStartedLayout(coroutineScope, doneGettingStarted, viewModel)
                     } else {
-                        MainApplicationLayout(portrait, viewModel, coroutineScope)
+                        MainApplicationLayout(portrait, viewModel, coroutineScope, permissionRequest)
                     }
                 }
             }

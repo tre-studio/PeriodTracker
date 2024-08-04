@@ -45,4 +45,11 @@
     <string name="next_button">Next</string>
     <string name="back_button">Back</string>
     <string name="submit_button">Submit</string>
+    <string name="this_feature_is_not_available">This feature is not available.</string>
+    <string name="intro_qrcode">Keeping your family informed about your cycle now by scanning this QR below.</string>
+    <string name="scan_qrcode">Want to know your partner\'s health status, click below to scan the QR code.</string>
+    <string name="open_camera">Open camera</string>
+    <string name="share_qrcode">Share</string>
+    <string name="please_restart_the_app_to_take_effect">Please restart the app to take effect.</string>
+    <string name="or_shareqr">Or</string>
 </resources>

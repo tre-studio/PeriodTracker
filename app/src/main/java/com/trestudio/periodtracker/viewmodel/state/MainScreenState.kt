@@ -9,6 +9,7 @@ enum class MainScreenState {
 
     // Icon qr code on navbar
     QRcode,
+    QRcodeCamera,
 
     // Help on navbar
     Help,
@@ -17,6 +18,7 @@ enum class MainScreenState {
     private fun isMainComponent(): Boolean = this == MainApp || this == QRcode || this == Help
 
     fun belongsToMainScreen(): Boolean = this == MainApp || this == Setting || this == Timeline || this == Note
+    fun belongsToQRcodeScreen(): Boolean = this == QRcode || this == QRcodeCamera
     fun isInTheLeft(next: MainScreenState): Boolean? =
         if (this.isMainComponent() && next.isMainComponent()) this < next else null
 }

@@ -28,6 +28,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _currentMonth = mutableStateOf(LocalDate.now())
     val currentMonth: State<LocalDate> = _currentMonth
+
+
     fun setCurrentMonth(month: LocalDate) {
         _currentMonth.value = month
     }

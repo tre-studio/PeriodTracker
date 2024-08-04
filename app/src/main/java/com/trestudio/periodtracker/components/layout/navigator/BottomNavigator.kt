@@ -41,7 +41,7 @@ fun BottomNavigator(
                 R.drawable.qr_code_2_48px,
                 R.string.qr_button_description,
                 R.string.nav_qr_code_label,
-                state == MainScreenState.QRcode,
+                state.belongsToQRcodeScreen(),
                 Modifier.weight(1f)
             ) {
                 viewModel.setMainScreenState(MainScreenState.QRcode)
