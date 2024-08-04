@@ -1,9 +1,8 @@
 package com.trestudio.periodtracker.components.qr
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +35,7 @@ fun ShareQRcode(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .scrollable(rememberScrollState(), Orientation.Vertical),
+            .verticalScroll(rememberScrollState()),
     ) QRColumn@{
         Text(
             text = stringResource(R.string.share_qrcode),

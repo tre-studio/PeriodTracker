@@ -5,13 +5,12 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -32,7 +31,7 @@ fun ScanCamera(
     permissionRequest: ActivityResultLauncher<String>,
     coroutineScope: CoroutineScope,
     viewModel: MainViewModel,
-    doneScan: MutableState<Boolean>
+    defaultLMP: MutableState<LMPstartDate?>
 ) {
     var cameraPermission by remember {
         mutableStateOf(false)
@@ -54,7 +53,7 @@ fun ScanCamera(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .scrollable(rememberScrollState(), Orientation.Vertical),
+            .verticalScroll(rememberScrollState())
     ) {
         Text(
             text = "Scan QR",
@@ -74,7 +73,7 @@ fun ScanCamera(
                             )
                             viewModel.setMainScreenState(MainScreenState.MainApp)
                             viewModel.setSettingButtonState(SettingButtonState.SettingButton)
-                            doneScan.value = true
+                            defaultLMP.value = viewModel.getLMPstartDate()
                         }
                     } catch (e: Exception) {
                         Log.e("Test", "Error: $e")
