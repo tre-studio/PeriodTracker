@@ -27,6 +27,7 @@ fun NoteList(notes: List<NoteDB>, callback: (NoteDB) -> Unit) {
                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                 callback(note)
             })
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
